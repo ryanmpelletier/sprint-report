@@ -21,5 +21,7 @@
 	   		<beans:property name="dataSource" ref="dataSource"/>
 	   </beans:bean>
 	
+		<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.TestSprintDAO">
+		</beans:bean>
 		
 </beans:beans>
