@@ -3,6 +3,8 @@ package com.pelletier.jira.plugins;
 import com.atlassian.jira.plugin.report.impl.AbstractReport;
 import java.sql.*;
 import com.atlassian.jira.web.action.ProjectActionSupport;
+import com.pelletier.jira.plugins.data.SprintDAO;
+import com.pelletier.jira.plugins.model.Sprint;
 import com.pelletier.jira.plugins.model.UserTime;
 
 import java.util.ArrayList;
@@ -14,37 +16,26 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SprintTimeReport extends AbstractReport {
-	
-	
-  private JdbcTemplate jdbcTemplate;
 
-  final String query = "SELECT AUTHOR as User, sum(timeworked) as TimeWorked FROM worklog WHERE STARTDATE > (select START_DATE from ao_60db71_sprint order by START_DATE DESC) GROUP BY AUTHOR ORDER BY TimeWorked DESC";
-  
-  public SprintTimeReport(JdbcTemplate jdbcTemplate){
-	  this.jdbcTemplate = jdbcTemplate;
-  }
+	/*
+	 * This will ultimately get a list of sprints from the injected DAO, which in
+	 * turn have a list of UserTimes 3. Pass that information to the view.
+	 */
 
-   public String generateReportHtml(ProjectActionSupport projectActionSupport, Map map) throws Exception {
+	private SprintDAO sprintDAO;
 
-   	List<UserTime> userTimes = new ArrayList<>();
+	public SprintTimeReport(SprintDAO sprintDAO) {
+		this.sprintDAO = sprintDAO;
+		System.out.println(sprintDAO);
+	}
 
-   	try{
-   	    userTimes = jdbcTemplate.query(query, new RowMapper<UserTime>(){
+	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map map) throws Exception {
 
-   		@Override
-   		public UserTime mapRow(ResultSet resultSet, int rowNumber) throws SQLException {
-   			return new UserTime(resultSet.getString("User"), resultSet.getInt("TimeWorked"));
-   		}
-   		   
-   	   });
-   	}catch(Exception e){
-   		e.printStackTrace();
-   	}
+		List<Sprint> sprints = new ArrayList<>();
+		sprints = sprintDAO.getSprints();
+		Map<String, Object> velocityParams = new HashMap<String, Object>();
+		velocityParams.put("sprints", sprints);
+		return descriptor.getHtml("view", velocityParams);
+	}
 
-   	
-   	Map<String, Object> velocityParams = new HashMap<String, Object>();
-   	velocityParams.put("userTimes",userTimes);
-    return descriptor.getHtml("view", velocityParams);
-   }
-   
 }
