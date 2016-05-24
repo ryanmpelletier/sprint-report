@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans" 
+             xmlns:osgi="http://www.springframework.org/schema/osgi" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://www.springframework.org/schema/beans 
+             http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+             http://www.springframework.org/schema/osgi 
+             http://www.springframework.org/schema/osgi/spring-osgi.xsd" 
+             default-autowire="autodetect">
+        
+        
+	   <!-- Initialization for data source -->
+	   <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	      <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	      <beans:property name="url" value="jdbc:mysql://localhost:3306/jiradb"/>
+	      <beans:property name="username" value="root"/>
+	      <beans:property name="password" value="test"/>
+	   </beans:bean>
+	   
+	   <beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	   		<beans:property name="dataSource" ref="dataSource"/>
+	   </beans:bean>
+	
+		
+</beans:beans>

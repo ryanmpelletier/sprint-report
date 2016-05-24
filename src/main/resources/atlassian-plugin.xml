@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="sprint-report"/>
+  <!-- add our web resources -->
+  <web-resource key="sprint-report-resources" name="sprint-report Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="sprint-report.css" location="/css/sprint-report.css"/>
+    <resource type="download" name="sprint-report.js" location="/js/sprint-report.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>sprint-report</context>
+  </web-resource>
+  <!-- publish our component -->
+  <component key="myPluginComponent" class="com.pelletier.jira.plugins.MyPluginComponentImpl" public="true">
+    <interface>com.pelletier.jira.plugins.MyPluginComponent</interface>
+  </component>
+  <!-- import from the product container -->
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <report name="Sprint Time Report" i18n-name-key="sprint-time-report.name" key="sprint-time-report" class="com.pelletier.jira.plugins.SprintTimeReport">
+    <description key="sprint-time-report.description">The Sprint Time Report Plugin</description>
+    <resource name="view" type="velocity" location="/templates/reports/sprint-time-report/view.vm"/>
+    <resource name="i18n" type="i18n" location="SprintTimeReport"/>
+    <label key="sprint-time-report.label"></label>
+    <!-- the properties of this report which the user must select before running it -->
+    <!-- Uncomment and edit properties...
+    <properties>
+        <property>
+            <key>versionId</key>
+            <name>common.concepts.version</name>
+            <description>report.timetracking.version.description</description>
+            <type>select</type>
+            <values class="com.atlassian.jira.portal.VersionOptionalValuesGenerator"/>
+        </property>
+        <property>
+            <key>sortingOrder</key>
+            <name>report.timetracking.sortingorder</name>
+            <description>report.timetracking.sortingorder.description</description>
+            <type>select</type>
+            <values class="com.atlassian.jira.portal.SortingValuesGenerator"/>
+        </property>
+    </properties>
+    -->
+  </report>
+</atlassian-plugin>

@@ -1,0 +1,10 @@
+<div>
+	<h3>User TImes</h3>
+	<h2>
+		<ol>
+			#foreach ($userTime in $userTimes)
+				<li>$userTime.getName() : $userTime.getTime()</li>
+			#end
+		</ol>
+	</h2>
+</div>
