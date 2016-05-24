@@ -13,7 +13,7 @@ public class UserTime{
 
 	public String getTime(){
 		   Integer hm = new Integer(time);
-		   return ((hm/60) + "hr" + (hm % 60) + "m ");
+		   return ((hm/60) + "hr " + (hm % 60) + "m ");
 	}
 
 	public String getName(){
