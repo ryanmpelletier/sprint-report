@@ -1,4 +1,4 @@
-package com.pelletier.jira.plugins;
+package com.pelletier.jira.plugins.model;
 
 
 public class UserTime{

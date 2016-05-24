@@ -3,6 +3,7 @@ package com.pelletier.jira.plugins;
 import com.atlassian.jira.plugin.report.impl.AbstractReport;
 import java.sql.*;
 import com.atlassian.jira.web.action.ProjectActionSupport;
+import com.pelletier.jira.plugins.model.UserTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +32,8 @@ public class SprintTimeReport extends AbstractReport {
    	    userTimes = jdbcTemplate.query(query, new RowMapper<UserTime>(){
 
    		@Override
-   		public UserTime mapRow(ResultSet rs, int rowNum) throws SQLException {
-   			return new UserTime(rs.getString("User"), rs.getInt("TimeWorked"));
+   		public UserTime mapRow(ResultSet resultSet, int rowNumber) throws SQLException {
+   			return new UserTime(resultSet.getString("User"), resultSet.getInt("TimeWorked"));
    		}
    		   
    	   });
