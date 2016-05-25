@@ -24,4 +24,9 @@
 		<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.TestSprintDAO">
 		</beans:bean>
 		
+<!-- 		<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.JdbcSprintDAO">
+			<beans:property name = "jdbcTemplate" ref = jdbcTemplate/>
+			<beans:property name = "query" value="SELECT blah from blah"/>
+		</beans:bean> -->
+		
 </beans:beans>

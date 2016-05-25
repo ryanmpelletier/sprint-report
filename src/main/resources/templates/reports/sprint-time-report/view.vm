@@ -1,10 +1,23 @@
-<div><!--It would be nice to style an error box for if something goes wrong here -->
-	<h3>User Times</h3>
-	<h2>
-		<ol>
-			#foreach ($userTime in $userTimes)
-				<li>$userTime.getName() : $userTime.getTime()</li>
-			#end
-		</ol>
-	</h2>
-</div>
+<html>
+    <head>
+        $webResourceManager.requireResourcesForContext("sprint-report")
+    <head>
+    <body>
+            <div><!-- I would love to use the index of this loop to assign id's on my sprint divs-->
+                #foreach ($sprint in $sprints)
+                    <div name="sprint" onclick="expandOrCollapse(${velocityCount})"><!-- velocityCount is 1 based -->
+                        <h1 id="sprint">$sprint.getName()<h1>
+                    </div>
+                    <!-- I think I need to use a set here to access the outer loop variable-->
+                    
+                    #set($sprintNumber = $velocityCount)
+                    
+                    <ul>
+                        #foreach ($userTime in $sprint.getUserTimes())
+                            <li name="user" data-sprint-number="${sprintNumber}">$userTime.getName() : $userTime.getTime()</li>
+                        #end
+                    </ul>
+                #end
+            </div>             
+    </body>
+</html>

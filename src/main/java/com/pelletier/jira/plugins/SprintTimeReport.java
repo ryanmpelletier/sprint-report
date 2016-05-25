@@ -29,8 +29,14 @@ public class SprintTimeReport extends AbstractReport {
 		System.out.println(sprintDAO);
 	}
 
-	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map map) throws Exception {
+	
+	
+	
+	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map params) throws Exception {
 
+		//here is how to get the project id!
+		System.out.println(params.get("selectedProjectId"));
+		
 		List<Sprint> sprints = new ArrayList<>();
 		sprints = sprintDAO.getSprints();
 		Map<String, Object> velocityParams = new HashMap<String, Object>();
