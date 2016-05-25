@@ -21,12 +21,20 @@
 	   		<beans:property name="dataSource" ref="dataSource"/>
 	   </beans:bean>
 	
-		<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.TestSprintDAO">
+	 	<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
+			<beans:property name = "jdbcTemplate" ref = "jdbcTemplate"/>
+			<beans:property name = "query" value = 
+			"SELECT
+			si.sprint,
+		    wl.author,
+		    date_format(wl.startdate, '%Y-%m-%d') as startDate,
+		    round(sum(wl.timeworked)/60/60,2) as timeWorked
+		    FROM SPRINT_ISSUES si
+		    JOIN jiradb.worklog wl ON wl.issueid = si.issueid
+		    WHERE si.projectid = ?
+			GROUP BY si.sprint, wl.author, date_format(wl.startdate, '%Y-%m-%d')
+		    ORDER BY si.sprint, date_format(wl.startdate, '%Y-%m-%d') DESC;"
+			/>
 		</beans:bean>
-		
-<!-- 		<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.JdbcSprintDAO">
-			<beans:property name = "jdbcTemplate" ref = jdbcTemplate/>
-			<beans:property name = "query" value="SELECT blah from blah"/>
-		</beans:bean> -->
 		
 </beans:beans>
