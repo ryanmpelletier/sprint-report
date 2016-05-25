@@ -9,6 +9,11 @@ div[name=sprint] {
     vertical-align: middle; 
     line-height: 15;
 }
+
 div[name=sprint]:hover{
 	background-color: #4687CE;
+}
+
+li[name=user]{
+	font-size: 250%;
 }

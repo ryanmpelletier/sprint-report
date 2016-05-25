@@ -5,14 +5,18 @@
     <body>
             <div><!-- I would love to use the index of this loop to assign id's on my sprint divs-->
                 #foreach ($sprint in $sprints)
-                    <div name="sprint" onclick="expandOrCollapse(${velocityCount})"><!-- Not sure if this is zero or 1 based -->
+                    <div name="sprint" onclick="expandOrCollapse(${velocityCount})"><!-- velocityCount is 1 based -->
                         <h1 id="sprint">$sprint.getName()<h1>
                     </div>
-                    <ol>
+                    <!-- I think I need to use a set here to access the outer loop variable-->
+                    
+                    #set($sprintNumber = $velocityCount)
+                    
+                    <ul>
                         #foreach ($userTime in $sprint.getUserTimes())
-                            <li>$userTime.getName() : $userTime.getTime()</li>
+                            <li name="user" data-sprint-number="${sprintNumber}">$userTime.getName() : $userTime.getTime()</li>
                         #end
-                    </ol>
+                    </ul>
                 #end
             </div>             
     </body>
