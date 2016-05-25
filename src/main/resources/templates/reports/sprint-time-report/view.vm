@@ -1,4 +1,10 @@
-<html>
+<div>
+    #foreach ($result in $results)
+    <h1>$result.toString()</h1>
+    #end
+</div>
+
+<!--<html>
     <head>
         $webResourceManager.requireResourcesForContext("sprint-report")
     <head>
@@ -20,4 +26,4 @@
                 #end
             </div>             
     </body>
-</html>
+</html>-->
