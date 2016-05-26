@@ -4,19 +4,24 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+/*
+ * Dependent on a list of queries, which will be run by the jdbcTemplate object.
+ * 
+ * Author: Ryan Pelletier
+ */
+
 
 public class JdbcResultsDAO implements ResultsDAO {
 
-	private String query;
+	private List<String> queries;
 	private JdbcTemplate jdbcTemplate;
 	
 
 	@Override
-	public List<Map<String, Object>> getResults(String projectID) {
+	public List<Map<String, Object>> getResults(Object[] params, int queryNumber) {
 		List<Map<String,Object>> results = null;
 		try{
-			System.out.println("QUERYING");
-			results = jdbcTemplate.queryForList(query, new Object[]{projectID});
+			results = jdbcTemplate.queryForList(queries.get(queryNumber), params);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -24,12 +29,14 @@ public class JdbcResultsDAO implements ResultsDAO {
 	}
 	
 
-	public void setQuery(String query) {
-		this.query = query;
+	public void setQueries(List<String> queries) {
+		this.queries = queries;
 	}
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+
+
 
 }

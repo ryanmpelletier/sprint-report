@@ -9,7 +9,7 @@ SELECT
     FROM SPRINT_ISSUES si
     JOIN jiradb.worklog wl ON wl.issueid = si.issueid
     WHERE si.projectid = 10200
-		and si.sprintid IN ('482')
+		#and si.sprintid IN ('482')
         #and wl.created > sysdate() - 5
         #and si.sprintid = 1
 	GROUP BY si.sprint, wl.author, date_format(wl.startdate, '%Y-%m-%d')

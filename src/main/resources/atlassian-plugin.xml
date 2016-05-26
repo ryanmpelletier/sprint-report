@@ -8,9 +8,12 @@
     <param name="plugin-icon">images/pluginIcon.png</param>
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
+  
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="sprint-report"/>
+  
   <!-- add our web resources -->
+  <!-- Web Resources allow our velocity templates to "see" files we put in the folders, such as js and css -->
   <web-resource key="sprint-report-resources" name="sprint-report Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="sprint-report.css" location="/css/sprint-report.css"/>
@@ -18,35 +21,38 @@
     <resource type="download" name="images/" location="/images"/>
     <context>sprint-report</context>
   </web-resource>
-  <!-- publish our component -->
-  <component key="myPluginComponent" class="com.pelletier.jira.plugins.MyPluginComponentImpl" public="true">
-    <interface>com.pelletier.jira.plugins.MyPluginComponent</interface>
-  </component>
-  <!-- import from the product container -->
+
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  
   <report name="Sprint Time Report" i18n-name-key="sprint-time-report.name" key="sprint-time-report" class="com.pelletier.jira.plugins.SprintTimeReport">
-    <description key="sprint-time-report.description">The Sprint Time Report Plugin</description>
+    <description key="sprint-time-report.description"></description>
     <resource name="view" type="velocity" location="/templates/reports/sprint-time-report/view.vm"/>
     <resource name="i18n" type="i18n" location="SprintTimeReport"/>
-    <label key="sprint-time-report.label"></label>
+    <label key="sprint-time-report.label"/>
+  </report>
+  
+  
+  <report name="Sprint User Time Report" i18n-name-key="sprint-user-time-report.name" key="sprint-user-time-report" class="com.pelletier.jira.plugins.SprintUserTimeReport">
+    <description key="sprint-user-time-report.description"></description>
+    <resource name="view" type="velocity" location="/templates/reports/sprint-user-time-report/view.vm"/>
+    <resource name="i18n" type="i18n" location="SprintUserTimeReport"/>
+    <label key="sprint-user-time-report.label"></label>
     <!-- the properties of this report which the user must select before running it -->
-    <!-- Uncomment and edit properties...
+    <!-- NOTE: If these properties are changed, Jira must be restarted, and the plugin re-uploaded for changes to take place -->
     <properties>
         <property>
-            <key>versionId</key>
-            <name>common.concepts.version</name>
-            <description>report.timetracking.version.description</description>
-            <type>select</type>
-            <values class="com.atlassian.jira.portal.VersionOptionalValuesGenerator"/>
+            <key>user</key>
+            <name>User</name>
+            <description>Enter a username (optional)</description>
+            <type>string</type>
         </property>
         <property>
-            <key>sortingOrder</key>
-            <name>report.timetracking.sortingorder</name>
-            <description>report.timetracking.sortingorder.description</description>
-            <type>select</type>
-            <values class="com.atlassian.jira.portal.SortingValuesGenerator"/>
+        	<key>sprint</key>
+        	<name>Sprint</name>
+        	<description>Type the name of a sprint to search (optional)</description>
+        	<type>string</type>
         </property>
     </properties>
-    -->
   </report>
+  
 </atlassian-plugin>

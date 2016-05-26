@@ -21,20 +21,31 @@
 	   		<beans:property name="dataSource" ref="dataSource"/>
 	   </beans:bean>
 	
-	 	<beans:bean id="sprintDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
+	 	<beans:bean id="sprintReportDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
 			<beans:property name = "jdbcTemplate" ref = "jdbcTemplate"/>
-			<beans:property name = "query" value = 
-			"SELECT
-			si.sprint,
-		    wl.author,
-		    date_format(wl.startdate, '%Y-%m-%d') as startDate,
-		    round(sum(wl.timeworked)/60/60,2) as timeWorked
-		    FROM SPRINT_ISSUES si
-		    JOIN jiradb.worklog wl ON wl.issueid = si.issueid
-		    WHERE si.projectid = ?
-			GROUP BY si.sprint, wl.author, date_format(wl.startdate, '%Y-%m-%d')
-		    ORDER BY si.sprint, date_format(wl.startdate, '%Y-%m-%d') DESC;"
-			/>
+        	<beans:property name="queries">
+        		<beans:list>
+	        		<beans:value>
+	        		SELECT pname, s.name as sprint, DATE_FORMAT(FROM_UNIXTIME(s.START_DATE/1000), '%m/%d/%y %h:%m') as startdate, DATE_FORMAT(FROM_UNIXTIME(s.END_DATE/1000), '%m/%d/%y %h:%m') as enddate, round(sum(wl.timeworked)/60/60,2) as timeworked FROM jiradb.jiraissue i 
+					    JOIN jiradb.project p ON (p.ID = i.project)
+					    JOIN jiradb.worklog wl ON (wl.issueid = i.ID)
+					    JOIN jiradb.ao_60db71_sprint s ON (s.start_date &lt;= unix_timestamp(wl.startdate) * 1000 AND unix_timestamp(wl.startdate) * 1000 &lt;= ifnull(s.COMPLETE_DATE,s.END_DATE))
+					    WHERE p.id = ?
+				        GROUP BY pname, s.name;
+		        	</beans:value>
+	        		<beans:value>
+					SELECT s.name as sprint, wl.author as author, round(wl.timeworked/60/60,2) as timeworked, wl.startdate as date
+						FROM jiradb.jiraissue i 
+						JOIN jiradb.project p ON (p.ID = i.project)
+						JOIN jiradb.worklog wl ON (wl.issueid = i.ID)
+						JOIN jiradb.ao_60db71_sprint s ON (s.start_date &lt;= unix_timestamp(wl.startdate) * 1000 AND unix_timestamp(wl.startdate) * 1000 &lt;= ifnull(s.COMPLETE_DATE,s.END_DATE))
+						WHERE p.id = ?
+				        AND (s.name LIKE ifnull(?,'%'))
+				        AND (wl.author LIKE ifnull(?,'%'))
+						ORDER BY s.name, startdate;
+	        		</beans:value>
+        		</beans:list>
+        	</beans:property>
 		</beans:bean>
 		
 </beans:beans>

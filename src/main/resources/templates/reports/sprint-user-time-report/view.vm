@@ -4,20 +4,20 @@
     $webResourceManager.requireResourcesForContext("sprint-report")
 </head>
 <body>
-    <table class="aui"><!-- The aui class is what makes the table look nice :)-->
+    <table class="aui"><!-- The aui class is what makes the table look nice-->
         <tbody>
                 <tr>
                     <th>Sprint</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Time Logged</th>                        
+                    <th>Author</th>
+                    <th>Time</th>
+                    <th>Date</th>
                 </tr>
                 #foreach($row in $results)
                     <tr>
                         <th>$row.get("sprint")</th>
-                        <th name ="date">${row.get('startdate')}</th>
-                        <th name ="date">${row.get('enddate')}</th>
-                        <th name="timeworked">$row.get("timeworked")</th>  							
+                        <th>$row.get('author')</th>
+                        <th>$row.get("timeworked")</th> 
+                        <th>$row.get("date")</th>  							
                     </tr>
                 #end
         </tbody>

@@ -21,3 +21,34 @@ CREATE OR REPLACE VIEW SPRINT_ISSUES AS
 	cfv.issue = ji.id
 	JOIN jiradb.ao_60db71_sprint s on s.id = cfv.stringvalue
 );
+
+CREATE OR REPLACE VIEW SPRINT_ISSUES2 AS
+(
+	SELECT
+	p.pname as project,
+	p.id as projectid,
+	ji.id as issueid,
+	s.name as sprint,
+	s.id as sprintid,
+	s.start_date as sprintstart,
+    s.end_date as sprintend
+	FROM jiradb.project p
+	JOIN jiradb.jiraissue ji ON (ji.project = p.id)
+	JOIN (SELECT * FROM jiradb.customfieldvalue WHERE customfield = 10004) cfv ON 
+	cfv.issue = ji.id
+	JOIN jiradb.ao_60db71_sprint s on s.id = cfv.stringvalue
+);
+
+SELECT
+	p.pname as project,
+	p.id as projectid,
+	ji.id as issueid,
+	s.name as sprint,
+	s.id as sprintid,
+	s.start_date as sprintstart,
+	s.end_date as sprintend
+	FROM jiradb.project p
+	JOIN jiradb.jiraissue ji ON (ji.project = p.id)
+	JOIN (SELECT * FROM jiradb.customfieldvalue WHERE customfield = 10004) cfv ON 
+	cfv.issue = ji.id
+	JOIN jiradb.ao_60db71_sprint s on s.id = cfv.stringvalue;
