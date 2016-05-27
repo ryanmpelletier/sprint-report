@@ -1,10 +1,16 @@
 package com.pelletier.jira.plugins;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.atlassian.jira.plugin.report.impl.AbstractReport;
 import com.atlassian.jira.web.action.ProjectActionSupport;
+import com.pelletier.jira.plugins.data.DbConfigReader;
+import com.pelletier.jira.plugins.data.JdbcResultsDAO;
 import com.pelletier.jira.plugins.data.ResultsDAO;
 
 /*
@@ -14,20 +20,22 @@ import com.pelletier.jira.plugins.data.ResultsDAO;
  * Author: Ryan Pelletier
  */
 
-public class SprintTimeReport extends AbstractReport {
+public class SprintTimeReport extends TimeReport {
 
-	private ResultsDAO sprintReportDAO;
 
 	private final int SPRINT_TIME_REPORT_QUERY = 0;
 	//Since there is a ResultsDAO bean defined in atlassian-spring.xml, it will be injected here
-	public SprintTimeReport(ResultsDAO sprintReportDAO) {
-		this.sprintReportDAO = sprintReportDAO;
+	//will also need to inject dbconfig.xml location
+	public SprintTimeReport(ResultsDAO resultsDAO) {
+		super(resultsDAO);
 	}
+	
 	
 	//Map params contains the parameters such as the project id as well as things the user enters before running the report
 	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map params) throws Exception {
+
 		Map<String, Object> velocityParams = new HashMap<String, Object>();
-		velocityParams.put("results", sprintReportDAO.getResults(new Object[]{(String) params.get("selectedProjectId")},SPRINT_TIME_REPORT_QUERY));
+		velocityParams.put("results", resultsDAO.getResults(new Object[]{(String) params.get("selectedProjectId")},SPRINT_TIME_REPORT_QUERY));
 		return descriptor.getHtml("view", velocityParams);
 	}
 
