@@ -10,6 +10,7 @@
         
 	
 	 	<beans:bean id="sprintReportDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
+	 		<beans:property name="dbconfigLocation" value="../Application Data/JIRA/dbconfig.xml"/>
         	<beans:property name="queries">
         		<beans:list>
 	        		<beans:value>
