@@ -16,7 +16,7 @@ to narrow search results.
 Spring configuration can be changed in sprint-report/src/main/resources/META-INF/spring/atlassian-spring.xml
 -the user can change the queries being run
 -the user can change the database driver
--the user can change the datasource
+-the user can change the location of the dbconfig.xml file, which will be used to build the DataSource
 
 Any third-party class references in the Spring XML must have the jars for those classes put into
 the sprint-report/src/main/resources/META-INF/lib directory

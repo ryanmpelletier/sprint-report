@@ -15,6 +15,7 @@ public class JdbcResultsDAO implements ResultsDAO {
 
 	private List<String> queries;
 	private JdbcTemplate jdbcTemplate;
+	private String dbconfigLocation;
 	
 
 	@Override
@@ -37,6 +38,14 @@ public class JdbcResultsDAO implements ResultsDAO {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	
 
+	public void setDbconfigLocation(String dbconfigLocation) {
+		this.dbconfigLocation = dbconfigLocation;
+	}
+
+	public String getDbconfigLocation() {
+		return dbconfigLocation;
+	}
 
 }
