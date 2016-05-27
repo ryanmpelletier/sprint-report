@@ -18,14 +18,16 @@ public class SprintTimeReport extends AbstractReport {
 
 	private ResultsDAO sprintReportDAO;
 
+	private final int SPRINT_TIME_REPORT_QUERY = 0;
+	//Since there is a ResultsDAO bean defined in atlassian-spring.xml, it will be injected here
 	public SprintTimeReport(ResultsDAO sprintReportDAO) {
 		this.sprintReportDAO = sprintReportDAO;
-		System.out.println(sprintReportDAO);
 	}
 	
+	//Map params contains the parameters such as the project id as well as things the user enters before running the report
 	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map params) throws Exception {
 		Map<String, Object> velocityParams = new HashMap<String, Object>();
-		velocityParams.put("results", sprintReportDAO.getResults(new Object[]{(String) params.get("selectedProjectId")},0));
+		velocityParams.put("results", sprintReportDAO.getResults(new Object[]{(String) params.get("selectedProjectId")},SPRINT_TIME_REPORT_QUERY));
 		return descriptor.getHtml("view", velocityParams);
 	}
 

@@ -22,7 +22,13 @@
     <context>sprint-report</context>
   </web-resource>
 
+  <!-- I'm pretty sure this is just so we can use the properties file for our application -->
+  
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  
+  
+  
+  <!-- Report plugin modules -->
   
   <report name="Sprint Time Report" i18n-name-key="sprint-time-report.name" key="sprint-time-report" class="com.pelletier.jira.plugins.SprintTimeReport">
     <description key="sprint-time-report.description"></description>
