@@ -1,16 +1,9 @@
 package com.pelletier.jira.plugins;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.atlassian.jira.plugin.report.impl.AbstractReport;
 import com.atlassian.jira.web.action.ProjectActionSupport;
-import com.pelletier.jira.plugins.data.DbConfigReader;
-import com.pelletier.jira.plugins.data.JdbcResultsDAO;
 import com.pelletier.jira.plugins.data.ResultsDAO;
 
 /*
