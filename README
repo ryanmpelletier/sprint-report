@@ -1,13 +1,22 @@
-You have successfully created an Atlassian Plugin!
+Atlassian JIRA 6.2.2 Plugin
+Sprint Report Plugin
 
-Here are the SDK commands you'll use immediately:
+This plugin allows users to specify queries to run which should be used to show sprint data on one of
+two reports.
 
-* atlas-run   -- installs this plugin into the product and starts it on localhost
-* atlas-debug -- same as atlas-run, but allows a debugger to attach at port 5005
-* atlas-cli   -- after atlas-run or atlas-debug, opens a Maven command line window:
-                 - 'pi' reinstalls the plugin into the running product instance
-* atlas-help  -- prints description for all commands in the SDK
+1. Sprint Time Report
+The Sprint Time Report will show, for the selected project, all of the sprints, and the total amount of 
+time which has been logged for those sprints.
 
-Full documentation is always available at:
+2. Sprint User Time Report
+The Sprint User Time Report will show, for the selected project, data about the logged work of users during
+the different sprints of the project. The user can optionally input the name of a sprint, and the name of the user, 
+to narrow search results.
 
-https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK
+Spring configuration can be changed in sprint-report/src/main/resources/META-INF/spring/atlassian-spring.xml
+-the user can change the queries being run
+-the user can change the database driver
+-the user can change the datasource
+
+Any third-party class references in the Spring XML must have the jars for those classes put into
+the sprint-report/src/main/resources/META-INF/lib directory
