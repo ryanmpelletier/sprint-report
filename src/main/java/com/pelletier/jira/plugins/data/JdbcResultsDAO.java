@@ -3,6 +3,7 @@ package com.pelletier.jira.plugins.data;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 /*
  * Dependent on a list of queries, which will be run by the jdbcTemplate object.
@@ -15,7 +16,6 @@ public class JdbcResultsDAO implements ResultsDAO {
 
 	private List<String> queries;
 	private JdbcTemplate jdbcTemplate;
-	private String dbconfigLocation;
 	
 
 	@Override
@@ -34,18 +34,24 @@ public class JdbcResultsDAO implements ResultsDAO {
 		this.queries = queries;
 	}
 
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
 	
-
+	//This function should do all the XML reading and stuff
 	public void setDbconfigLocation(String dbconfigLocation) {
-		this.dbconfigLocation = dbconfigLocation;
+		
+		
+		//unfortunately right now we rely on BasicDataSource because we can create it with url, driverClass, username, and password
+		BasicDataSource basicDataSource = new BasicDataSource();
+		
+		DbConfigReader dbConfigReader = new DbConfigReader();
+		
+		//parse dbconfig.xml and set DataSource properties
+		Map<String,String> dbInfo = dbConfigReader.getDbConnectionInfo(dbconfigLocation);
+		if(dbInfo != null){
+			basicDataSource.setUrl(dbInfo.get("url"));
+			basicDataSource.setDriverClassName(dbInfo.get("driverClass"));
+			basicDataSource.setUsername(dbInfo.get("username"));
+			basicDataSource.setPassword(dbInfo.get("password"));
+			this.jdbcTemplate = new JdbcTemplate(basicDataSource);
+		}
 	}
-
-	public String getDbconfigLocation() {
-		return dbconfigLocation;
-	}
-
 }
