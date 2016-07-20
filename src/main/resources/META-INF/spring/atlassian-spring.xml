@@ -7,6 +7,31 @@
              http://www.springframework.org/schema/osgi 
              http://www.springframework.org/schema/osgi/spring-osgi.xsd" 
              default-autowire="autodetect">
+             
+             
+<!--                  <beans:bean id="sprintTimeReportAdapter" class="com.pelletier.valuelist.adapter.jdbc.DefaultJdbcDataAdapter">
+			        <beans:property name="sql">
+			            <beans:value>SELECT ROUTE_GROUP.NAME, ROUTE_GROUP.ROUTE_GROUP_ID FROM ROUTE_GROUP_MEMBER JOIN ROUTE_GROUP ON ROUTE_GROUP.ROUTE_GROUP_ID = ROUTE_GROUP_MEMBER.ROUTE_GROUP_ID #if($RI)WHERE ROUTING_INDICATOR = :RI #end</beans:value>
+			        </beans:property>
+			    </beans:bean>
+			
+			    <beans:bean id="sprintUserTimeReportAdapter" class="com.pelletier.valuelist.adapter.jdbc.DefaultJdbcDataAdapter">
+			        <beans:property name="sql">
+			            <beans:value>SELECT NAME,FORMAT,STATE,TYPE FROM DEI #if($sortByColumn &amp;&amp; $sortByOrder) ORDER BY $sortByColumn $sortByOrder#end</beans:value>
+			        </beans:property>
+			    </beans:bean>-->
+			    <beans:bean id="jiraJdbcAdapter" class="com.pelletier.plugins.adapter.JiraJdbcAdapter"/>
+             
+             
+               <beans:bean id="valueListService" class="com.pelletier.valuelist.DefaultValuesListService">
+                    <beans:property name="adapters">
+		            <beans:map>
+<!--  		                <beans:entry key="sprintTimeReport" value-ref="sprintTimeReportAdapter"/>
+		                <beans:entry key="sprintUserTimeReport" value-ref="sprintUserTimeReportAdapter"/> -->
+		                <beans:entry key="jiraJdbcAdapter" value-ref="jiraJdbcAdapter"/>
+		            </beans:map>
+		        </beans:property>
+             </beans:bean>
         
 	
 	 	<beans:bean id="sprintReportDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
@@ -34,6 +59,7 @@
 	        		</beans:value>
         		</beans:list>
         	</beans:property>
+          	<beans:property name="valueListService" ref="valueListService"/>
 		</beans:bean>
 		
 </beans:beans>

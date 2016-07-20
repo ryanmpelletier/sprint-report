@@ -74,14 +74,14 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>3.0.0.RELEASE</version>
+            <version>3.2.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>3.0.0.RELEASE</version>
+            <version>3.2.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

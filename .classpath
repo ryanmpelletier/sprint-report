@@ -319,9 +319,9 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/578993/.m2/repository/com/atlassian/upm/upm-api/2.15/upm-api-2.15-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="spring-jdbc-3.0.0.RELEASE.jar" sourcepath="C:/Users/578993/.m2/repository/org/springframework/spring-jdbc/3.0.0.RELEASE/spring-jdbc-3.0.0.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="spring-tx-3.0.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="spring-core-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="valuelistservice-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="spring-core-3.2.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="spring-jdbc-3.2.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="spring-tx-3.2.4.RELEASE.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
