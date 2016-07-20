@@ -322,5 +322,6 @@
 	<classpathentry kind="lib" path="spring-jdbc-3.0.0.RELEASE.jar" sourcepath="C:/Users/578993/.m2/repository/org/springframework/spring-jdbc/3.0.0.RELEASE/spring-jdbc-3.0.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="spring-tx-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="spring-core-3.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="valuelistservice-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

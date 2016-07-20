@@ -53,6 +53,12 @@
             <artifactId>gson</artifactId>
             <version>2.2.2-atlassian-1</version>
         </dependency>
+        <!--This is in my local maven repository, you will need to manually add the jar (interesting that this had to be here) -->
+        <dependency>
+            <groupId>com.pelletier.valuelist</groupId>
+            <artifactId>valuelistservice</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
         <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
         <!--
