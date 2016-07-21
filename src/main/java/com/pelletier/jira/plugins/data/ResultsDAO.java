@@ -17,5 +17,5 @@ import java.util.Map;
 
 public interface ResultsDAO {
 	
-	public List<Map<String,Object>> getResults(Object[] params, int queryNumber);
+	public List<Map<String,Object>> getResults(Object[] params, String queryKey);
 }

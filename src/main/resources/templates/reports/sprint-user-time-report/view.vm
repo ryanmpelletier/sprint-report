@@ -17,7 +17,7 @@
                         <th>$row.get("sprint")</th>
                         <th>$row.get('author')</th>
                         <th>$row.get("timeworked")</th> 
-                        <th>$row.get("date")</th>  							
+                        <th>$row.get("startdate")</th>  							
                     </tr>
                 #end
         </tbody>

@@ -8,31 +8,77 @@
              http://www.springframework.org/schema/osgi/spring-osgi.xsd" 
              default-autowire="autodetect">
         
+		<!-- Lets just set the datasource -->
+	    <beans:bean id="oracleDataSource" class="oracle.jdbc.pool.OracleDataSource">
+	        <beans:property name="dataSourceName" value="ds"/>
+	        <beans:property name="URL" value="jdbc:oracle:thin:@192.168.230.128:1521:xe"/>
+	        <beans:property name="user" value="jiradbuser2"/>
+	        <beans:property name="password" value="."/>
+    	</beans:bean>
+	
+	
 	
 	 	<beans:bean id="sprintReportDAO" class="com.pelletier.jira.plugins.data.JdbcResultsDAO">
-	 		<beans:property name="dbconfigLocation" value="../Application Data/JIRA/dbconfig.xml"/>
+ 	 		<beans:property name="dbconfigLocation" value="../Application Data/JIRA/dbconfig.xml"/>
+			<!-- <beans:property name="dataSource" ref="oracleDataSource"/> -->
         	<beans:property name="queries">
-        		<beans:list>
-	        		<beans:value>
-	        		SELECT pname, s.name as sprint, DATE_FORMAT(FROM_UNIXTIME(s.START_DATE/1000), '%m/%d/%y %h:%m') as startdate, DATE_FORMAT(FROM_UNIXTIME(s.END_DATE/1000), '%m/%d/%y %h:%m') as enddate, round(sum(wl.timeworked)/60/60,2) as timeworked FROM jiradb.jiraissue i 
-					    JOIN jiradb.project p ON (p.ID = i.project)
-					    JOIN jiradb.worklog wl ON (wl.issueid = i.ID)
-					    JOIN jiradb.ao_60db71_sprint s ON (s.start_date &lt;= unix_timestamp(wl.startdate) * 1000 AND unix_timestamp(wl.startdate) * 1000 &lt;= ifnull(s.COMPLETE_DATE,s.END_DATE))
-					    WHERE p.id = ?
-				        GROUP BY pname, s.name;
-		        	</beans:value>
-	        		<beans:value>
-					SELECT s.name as sprint, wl.author as author, round(wl.timeworked/60/60,2) as timeworked, wl.startdate as date
-						FROM jiradb.jiraissue i 
-						JOIN jiradb.project p ON (p.ID = i.project)
-						JOIN jiradb.worklog wl ON (wl.issueid = i.ID)
-						JOIN jiradb.ao_60db71_sprint s ON (s.start_date &lt;= unix_timestamp(wl.startdate) * 1000 AND unix_timestamp(wl.startdate) * 1000 &lt;= ifnull(s.COMPLETE_DATE,s.END_DATE))
-						WHERE p.id = ?
-				        AND (s.name LIKE ifnull(?,'%'))
-				        AND (wl.author LIKE ifnull(?,'%'))
-						ORDER BY s.name, startdate;
-	        		</beans:value>
-        		</beans:list>
+				<beans:map>
+					<beans:entry key="SPRINT_TIME_REPORT">
+						<beans:value>
+					 		SELECT 
+					 		s.NAME as sprint,
+					 		(TO_DATE('1970-01-01','YYYY-MM-DD') + sprintStart/1000/60/60/24 - 4/24) as startdate,
+					 		(TO_DATE('1970-01-01','YYYY-MM-DD') + sprintEnd/1000/60/60/24 - 4/24) as enddate,
+					 		round(sum(wl.TIMEWORKED/60/60),2) as timeworked 
+					 		FROM jiraissue i
+					 		JOIN project p ON(p.ID = i.project)
+					 		JOIN worklog wl ON(wl.issueid = i.ID)
+					 		JOIN 
+					 			(SELECT 
+					 				UNIQUE  sprint.NAME as NAME,
+					 				sprint.ID as sprintID,
+					 				sprint.START_DATE as sprintStart,
+					 				nvl(sprint.COMPLETE_DATE,sprint.END_DATE) as sprintEnd
+					 				FROM jiraissue i
+					 				JOIN (SELECT * FROM CUSTOMFIELDVALUE WHERE customfield = 10004) cfv on cfv.issue = i.id 
+					 				JOIN AO_60DB71_SPRINT sprint on sprint.id = to_number(cfv.stringvalue) 
+					 				WHERE i.PROJECT = ?
+				 				) s 
+			 				ON (wl.STARTDATE &gt;= (TO_DATE('1970-01-01', 'YYYY-MM-DD') + (s.sprintStart/1000/60/60/24) - 4/24) AND wl.STARTDATE &lt;= (TO_DATE('1970-01-01', 'YYYY-MM-DD') + (s.sprintEnd/1000/60/60/24) - 4/24))
+			 				WHERE p.ID = ? 
+			 				GROUP BY s.NAME, sprintStart,sprintEnd 
+			 				ORDER BY sprintStart DESC
+						</beans:value>
+					</beans:entry>
+					<beans:entry key="SPRINT_USER_TIME_REPORT">
+						<beans:value>
+							SELECT 
+							s.NAME as sprint,
+							wl.author as author,
+							round(wl.TIMEWORKED/60/60,2) as timeworked,
+							wl.startdate as startdate 
+							FROM jiraissue i 
+							JOIN project p ON(p.ID = i.PROJECT)
+							JOIN worklog wl ON(wl.issueid = i.ID)
+							JOIN 
+								(SELECT 
+									UNIQUE sprint.NAME as NAME,
+									sprint.ID as sprintID,
+									sprint.START_DATE as sprintStart,
+									nvl(sprint.COMPLETE_DATE,sprint.END_DATE) as sprintEnd
+									FROM jiraissue i
+									JOIN (SELECT * FROM CUSTOMFIELDVALUE WHERE customfield = 10004) cfv on cfv.issue = i.id
+									JOIN AO_60DB71_SPRINT sprint on sprint.id = to_number(cfv.stringvalue)
+									WHERE i.PROJECT = ?
+								) s
+							ON (wl.STARTDATE &gt;= (TO_DATE('1970-01-01', 'YYYY-MM-DD') + (s.sprintStart/1000/60/60/24) - 4/24) AND wl.STARTDATE &lt;= (TO_DATE('1970-01-01', 'YYYY-MM-DD') + (s.sprintEnd/1000/60/60/24) - 4/24))
+							WHERE p.id = ?
+							AND (s.NAME LIKE nvl(?,'%'))
+							AND (wl.author LIKE nvl(?,'%'))
+							ORDER BY wl.startdate DESC, s.NAME, wl.author
+						</beans:value>
+					</beans:entry>
+				</beans:map>
         	</beans:property>
 		</beans:bean>
 		

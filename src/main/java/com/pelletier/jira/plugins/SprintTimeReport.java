@@ -16,7 +16,7 @@ import com.pelletier.jira.plugins.data.ResultsDAO;
 public class SprintTimeReport extends TimeReport {
 
 
-	private final int SPRINT_TIME_REPORT_QUERY = 0;
+	private final String SPRINT_TIME_REPORT_QUERY = "SPRINT_TIME_REPORT";
 	//Since there is a ResultsDAO bean defined in atlassian-spring.xml, it will be injected here
 	//will also need to inject dbconfig.xml location
 	public SprintTimeReport(ResultsDAO resultsDAO) {
@@ -28,7 +28,9 @@ public class SprintTimeReport extends TimeReport {
 	public String generateReportHtml(ProjectActionSupport projectActionSupport, Map params) throws Exception {
 
 		Map<String, Object> velocityParams = new HashMap<String, Object>();
-		velocityParams.put("results", resultsDAO.getResults(new Object[]{(String) params.get("selectedProjectId")},SPRINT_TIME_REPORT_QUERY));
+		String projectId = (String) params.get("selectedProjectId");
+		System.out.println(projectId);
+		velocityParams.put("results", resultsDAO.getResults(new Object[]{projectId,projectId},SPRINT_TIME_REPORT_QUERY));
 		return descriptor.getHtml("view", velocityParams);
 	}
 

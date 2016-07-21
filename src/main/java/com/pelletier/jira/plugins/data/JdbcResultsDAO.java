@@ -3,6 +3,8 @@ package com.pelletier.jira.plugins.data;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 /*
@@ -14,26 +16,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcResultsDAO implements ResultsDAO {
 
-	private List<String> queries;
+	private Map<String,String> queries;
 	private JdbcTemplate jdbcTemplate;
 	
 
 	@Override
-	public List<Map<String, Object>> getResults(Object[] params, int queryNumber) {
+	public List<Map<String, Object>> getResults(Object[] params, String queryKey) {
 		List<Map<String,Object>> results = null;
 		try{
-			results = jdbcTemplate.queryForList(queries.get(queryNumber), params);
+			results = jdbcTemplate.queryForList(queries.get(queryKey), params);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return results;
 	}
 	
-
-	public void setQueries(List<String> queries) {
-		this.queries = queries;
-	}
-
+	
 	
 	//This function should do all the XML reading and stuff
 	public void setDbconfigLocation(String dbconfigLocation) {
@@ -56,4 +54,29 @@ public class JdbcResultsDAO implements ResultsDAO {
 			this.jdbcTemplate = new JdbcTemplate(basicDataSource);
 		}
 	}
+
+
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+
+
+
+
+	public void setQueries(Map<String, String> queries) {
+		this.queries = queries;
+	}
+
+
+
+
+
+	public Map<String, String> getQueries() {
+		return queries;
+	}
+	
+	
+	
+	
 }
